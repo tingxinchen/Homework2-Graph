@@ -41,7 +41,7 @@ public:
             cout << i << " ";
             it = adj[i].begin();
             for (int j = 0; j < n; j++) {
-                if (it != adj[i].end() && *it == j) {
+                if (find(adj[i].begin(), adj[i].end(), j) != adj[i].end()) {
                     cout << "1 ";
                     ++it;
                 }
@@ -62,7 +62,24 @@ public:
             cout << endl;
         }
     }
+    void DFS_util(int v, vector<bool>& visited) {
+        visited[v] = true;
+        cout << v << " ";
+
+        for (int w : adj[v]) {
+            if (!visited[w]) {
+                DFS_util(w, visited);
+            }
+        }
+    }
+    void DFS(int start) {
+        vector<bool> visited(n, false);
+        DFS_util(start, visited);
+        cout << endl;
+    }
 };
+
+
 
 int main() {
     Graph g(10);
@@ -78,9 +95,10 @@ int main() {
     g.addEdge(6, 7);
     g.addEdge(7, 8);
     g.addEdge(7, 9);
-
+    
     g.showArraylist();
     g.showMartix();
-
+    cout << "DFS:";
+    g.DFS(0);
     return 0;
 }
