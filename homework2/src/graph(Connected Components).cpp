@@ -164,8 +164,7 @@ int main() {
     g.addEdge(4, 3);
     g.addEdge(3, 5);
     g.addEdge(5, 6);
-    g.addEdge(5, 7);
-    g.addEdge(6, 7);
+
     g.addEdge(7, 8);
     g.addEdge(7, 9);
     
