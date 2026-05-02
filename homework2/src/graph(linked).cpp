@@ -51,9 +51,8 @@ public:
     }
 
     void addEdge(int u, int v) {
-        // 修改為有方向性 (Directed)：只加 u -> v，註解掉 adj[v].push_back(u)
         adj[u].push_back(v);
-        // adj[v].push_back(u); 
+        adj[v].push_back(u); 
        
         //加入至 Linked Adjacency Lists
         Node* newNode = new Node(v);
