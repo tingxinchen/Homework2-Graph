@@ -132,10 +132,11 @@ void Kruskal() {
         vector<int>::iterator it2 = weight[i].begin();
 
         while (it1 != adj[i].end()) {
-            int v = *it1;
-            int w = *it2;
+            int v = *it1; // 鄰居
+            int w = *it2; // 邊的距離
 
-            if (i < v) {
+
+            if (i < v) {     // 避免重複加入
                 Edge e;
                 e.u = i;
                 e.v = v;
@@ -148,7 +149,7 @@ void Kruskal() {
         }
     }
 
-    sort(edges.begin(), edges.end(), cmp);
+    sort(edges.begin(), edges.end(), cmp);     //照距離排序
 
     int parent[100];
     for (int i = 0; i < n; i++) parent[i] = i;
@@ -161,7 +162,7 @@ void Kruskal() {
         int v = it->v;
         int w = it->weight;
 
-        if (findParent(u, parent) != findParent(v, parent)) {
+        if (findParent(u, parent) != findParent(v, parent)) {          // 不會形成迴圈才加入
             cout << u << " - " << v << " : " << w << endl;
             total += w;
             unite(u, v, parent);
@@ -175,9 +176,9 @@ void Kruskal() {
 ### Prim
 ```cpp
 void Prim(int start) {
-    int key[100];
-    bool inMST[100];
-    int parent[100];
+    int key[100]; // 存目前加入的最小邊距離
+    bool inMST[100]; // 存這個點有沒有已經在MST裡
+    int parent[100]; // 存每個點是從哪個點連進來的
 
     for (int i = 0; i < n; i++) {
         key[i] = 999999;
@@ -190,7 +191,7 @@ void Prim(int start) {
     for (int count = 0; count < n - 1; count++) {
         int min = 999999, u = -1;
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {  // 找還沒在MST中且key最小的點
             if (!inMST[i] && key[i] < min) {
                 min = key[i];
                 u = i;
