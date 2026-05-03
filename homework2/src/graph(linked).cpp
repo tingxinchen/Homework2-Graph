@@ -10,7 +10,6 @@ struct Edge {
     int u, v;
 };
 
-//用於 Linked Adjacency Lists 的節點結構
 struct Node {
     int dest;
     Node* next;
@@ -38,7 +37,6 @@ public:
     ~Graph() {
         delete[] adj;
         
-        //釋放 Linked Adjacency Lists 的記憶體
         for (int i = 0; i < n; ++i) {
             Node* current = linkedAdj[i];
             while (current != nullptr) {
@@ -54,7 +52,6 @@ public:
         adj[u].push_back(v);
         adj[v].push_back(u); 
        
-        //加入至 Linked Adjacency Lists
         Node* newNode = new Node(v);
         if (linkedAdj[u] == nullptr) {
             linkedAdj[u] = newNode;
@@ -101,7 +98,7 @@ public:
         }
     }
 
-    // 顯示Linked Adjacency Lists
+    
     void showLinkedlist() {
         for (int i = 0; i < n; ++i) {
             cout << i << " : ";
@@ -151,7 +148,7 @@ int main() {
     g.showArraylist();
     
     cout << "\nLinked Adjacency Lists:" << endl;
-    g.showLinkedlist(); // 呼叫Linked list
+    g.showLinkedlist(); 
 
     cout << "\nAdjacency Matrix:" << endl;
     g.showMartix();
