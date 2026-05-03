@@ -264,6 +264,13 @@ int main() {
 ##效能分析
 
 * **空間複雜度**：
+  1. Linked Adjacency Lists: $O(V + E)$
+  2. Connected Components: $O(V)$
+  3. Bioconnect Components: $O(V + E)$
+* **時間複雜度**：
+  1. Linked Adjacency Lists: $O(V + E)$
+  2. Connected Components: $O(V + E)$
+  3. Bioconnect Components: $O(V + E)$
 ## 測試與驗證
 
 ### 測試案例
