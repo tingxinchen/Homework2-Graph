@@ -1,3 +1,13 @@
+/*
+Undirected
+Spanning Trees:Kruskalâ€™s Algorithmã€Primâ€™s Algorithm
+BFS
+DFS
+Weighted
+*/
+
+
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -17,8 +27,8 @@ class Graph {
 private:
     int n;
 
-    vector<int> adj[100];      // ¾F©~
-    vector<int> weight[100];   // Åv­«
+    vector<int> adj[100];     
+    vector<int> weight[100];  
 
 public:
     Graph(int nodes) {
@@ -138,7 +148,7 @@ public:
     void Kruskal() {
         vector<Edge> edges;
 
-        // ¦¬¶°Ãä
+        // Â¦Â¬Â¶Â°ÃƒÃ¤
         for (int i = 0; i < n; i++) {
             vector<int>::iterator it1 = adj[i].begin();
             vector<int>::iterator it2 = weight[i].begin();
