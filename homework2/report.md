@@ -1,8 +1,10 @@
 # 41343119
 Graph 
 ## 解題說明
-需要實作:
-
+實作的部分:
+1. Linked Adjacency Lists
+2. Connected Components
+3. Bioconnect Components
 ### 解題策略和步驟
 
 
