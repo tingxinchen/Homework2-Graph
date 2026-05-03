@@ -16,13 +16,13 @@ Graph
 
 ## 程式實作
 以下是程式碼：
-###Adjacency List
+### Adjacency List
 ```cpp
 vector<int> adj[100];     
 vector<int> weight[100];
 ```
 
-###Adjacency List
+### Adjacency List
 ```cpp
 void showList() {
     vector<int>::iterator it1;
@@ -43,7 +43,7 @@ void showList() {
     }
 }
 ```
-###Adjacency Matrix
+### Adjacency Matrix
 ```cpp
 void showMatrix() {
     cout << "  ";
@@ -79,7 +79,7 @@ void showMatrix() {
 }
 ```
 
-###DFS
+### DFS
 ```cpp
 void DFS_util(int v, bool visited[]) {
         visited[v] = true;
@@ -95,7 +95,7 @@ void DFS_util(int v, bool visited[]) {
     }
 ```
 
-###DFS
+### BFS
 ```cpp
 void BFS(int start) {
         bool visited[100] = { false };
@@ -122,7 +122,7 @@ void BFS(int start) {
     }
 ```
 
-###Kruskal
+### Kruskal
 ```cpp
 void Kruskal() {
     vector<Edge> edges;
@@ -172,7 +172,7 @@ void Kruskal() {
 }
 ```
 
-###Prim
+### Prim
 ```cpp
 void Prim(int start) {
     int key[100];
@@ -227,7 +227,7 @@ void Prim(int start) {
     cout << "Total = " << total << endl;
 }
 ```
-##效能分析
+## 效能分析
 
 * **時間複雜度**：
 1. DFS:O(V + E)
