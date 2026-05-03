@@ -274,6 +274,9 @@ int main() {
 ## 測試與驗證
 
 ### 測試案例
+<img width="281" height="250" alt="image" src="https://github.com/user-attachments/assets/fcc4272b-11ca-4ee5-ac06-0d6c890e9c80" />
+<img width="329" height="77" alt="image" src="https://github.com/user-attachments/assets/52ac98f3-5b5b-4026-b4cd-7c6aea4b831a" />
+<img width="304" height="382" alt="image" src="https://github.com/user-attachments/assets/cb221353-cc3d-42e8-9cef-f73adca5bcc1" />
 
 
 ### 結論
