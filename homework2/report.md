@@ -283,7 +283,9 @@ int main() {
 
 
 
-## 申論及開發報告
+1.	相鄰串列 (Adjacency Lists)」，能避免了矩陣的空間浪費，確保時間與空間複雜度皆達到最優的 $O(V+E)$。
+2.	連通分支 (Connected Components)利用基礎的 DFS (深度優先搜尋)，能正確且有效地找出圖中彼此獨立的子圖。
+3.	雙連通分量 (Biconnected Components)結合了 Tarjan 演算法（利用 dfn 與 low 判斷關節點）與堆疊 (Stack) 結構。能找出彼此獨立的子圖。
 
 
 # 41343128 陳廷鑫
