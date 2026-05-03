@@ -1,3 +1,294 @@
+#第九組:41343119、41343128
+# 41343128 陳廷鑫
+Graph 
+## 解題說明
+負責實作的部分:
+1. Adjacency List、Adjacency Matrix
+2. BFS、DFS
+3. Weighted
+4. Spanning Trees:Kruskal’s Algorithm、Prim’s Algorithm
+### 解題策略和步驟
+1. 使用 vector<int>來儲存點之間的關係還有距離
+2. DFS使用遞迴，先標記自己然後找鄰居，走到底之後再回來，直到所有的點都被看過。
+3. BFS用了queue，從起點開始，把鄰居都先放進queue，再從裡面一個一個的找鄰居
+4. Kruskal先找出所有的邊用距離排好，從距離最小的邊開始，如果會形成迴圈就不要選
+5. Prim找一個起點，從起點開始找距離最短的邊，選到下一個點，然後重複
+
+## 程式實作
+以下是程式碼：
+###Adjacency List
+```cpp
+vector<int> adj[100];     
+vector<int> weight[100];
+```
+
+###Adjacency List
+```cpp
+void showList() {
+    vector<int>::iterator it1;
+    vector<int>::iterator it2;
+
+    for (int i = 0; i < n; i++) {
+        cout << i << " : ";
+
+        it1 = adj[i].begin();
+        it2 = weight[i].begin();
+
+        while (it1 != adj[i].end()) {
+            cout << *it1 << "(w:" << *it2 << ") ";
+            ++it1;
+            ++it2;
+        }
+        cout << endl;
+    }
+}
+```
+###Adjacency Matrix
+```cpp
+void showMatrix() {
+    cout << "  ";
+    for (int i = 0; i < n; i++) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    for (int i = 0; i < n; i++) {
+        cout << i << " ";
+        for (int j = 0; j < n; j++) {
+            bool found = false;
+
+            vector<int>::iterator it1 = adj[i].begin();
+            vector<int>::iterator it2 = weight[i].begin();
+
+            while (it1 != adj[i].end()) {
+                if (*it1 == j) {
+                    cout << *it2 << " ";
+                    found = true;
+                    break;
+                }
+                ++it1;
+                ++it2;
+            }
+
+            if (!found) {
+                cout << "0 ";
+            }
+        }
+        cout << endl;
+    }
+}
+```
+
+###DFS
+```cpp
+void DFS_util(int v, bool visited[]) {
+        visited[v] = true;
+        cout << v << " ";
+
+        vector<int>::iterator it;
+        for (it = adj[v].begin(); it != adj[v].end(); ++it) {
+            int next = *it;
+            if (!visited[next]) {
+                DFS_util(next, visited);
+            }
+        }
+    }
+```
+
+###DFS
+```cpp
+void BFS(int start) {
+        bool visited[100] = { false };
+        queue<int> q;
+
+        visited[start] = true;
+        q.push(start);
+
+        while (!q.empty()) {
+            int v = q.front();
+            q.pop();
+            cout << v << " ";
+
+            vector<int>::iterator it;
+            for (it = adj[v].begin(); it != adj[v].end(); ++it) {
+                int next = *it;
+                if (!visited[next]) {
+                    visited[next] = true;
+                    q.push(next);
+                }
+            }
+        }
+        cout << endl;
+    }
+```
+
+###Kruskal
+```cpp
+void Kruskal() {
+    vector<Edge> edges;
+
+    for (int i = 0; i < n; i++) {
+        vector<int>::iterator it1 = adj[i].begin();
+        vector<int>::iterator it2 = weight[i].begin();
+
+        while (it1 != adj[i].end()) {
+            int v = *it1;
+            int w = *it2;
+
+            if (i < v) {
+                Edge e;
+                e.u = i;
+                e.v = v;
+                e.weight = w;
+                edges.push_back(e);
+            }
+
+            ++it1;
+            ++it2;
+        }
+    }
+
+    sort(edges.begin(), edges.end(), cmp);
+
+    int parent[100];
+    for (int i = 0; i < n; i++) parent[i] = i;
+
+    int total = 0;
+
+    vector<Edge>::iterator it;
+    for (it = edges.begin(); it != edges.end(); ++it) {
+        int u = it->u;
+        int v = it->v;
+        int w = it->weight;
+
+        if (findParent(u, parent) != findParent(v, parent)) {
+            cout << u << " - " << v << " : " << w << endl;
+            total += w;
+            unite(u, v, parent);
+        }
+    }
+
+    cout << "Total = " << total << endl;
+}
+```
+
+###Prim
+```cpp
+void Prim(int start) {
+    int key[100];
+    bool inMST[100];
+    int parent[100];
+
+    for (int i = 0; i < n; i++) {
+        key[i] = 999999;
+        inMST[i] = false;
+        parent[i] = -1;
+    }
+
+    key[start] = 0;
+
+    for (int count = 0; count < n - 1; count++) {
+        int min = 999999, u = -1;
+
+        for (int i = 0; i < n; i++) {
+            if (!inMST[i] && key[i] < min) {
+                min = key[i];
+                u = i;
+            }
+        }
+
+        inMST[u] = true;
+
+        vector<int>::iterator it1 = adj[u].begin();
+        vector<int>::iterator it2 = weight[u].begin();
+
+        while (it1 != adj[u].end()) {
+            int v = *it1;
+            int w = *it2;
+
+            if (!inMST[v] && w < key[v]) {
+                key[v] = w;
+                parent[v] = u;
+            }
+
+            ++it1;
+            ++it2;
+        }
+    }
+
+    int total = 0;
+    for (int i = 0; i < n; i++) {
+        if (parent[i] != -1) {
+            cout << parent[i] << " - " << i << " : " << key[i] << endl;
+            total += key[i];
+        }
+    }
+
+    cout << "Total = " << total << endl;
+}
+```
+##效能分析
+
+* **時間複雜度**：
+1. DFS:O(V + E)
+2. BFS:O(V + E)
+3. Kruskal:O(E log E)
+4. Prim:O(V²)
+## 測試與驗證
+
+### 測試案例
+```cpp
+Graph g(5);
+
+g.addEdge(0, 1, 1);
+g.addEdge(0, 2, 2);
+g.addEdge(1, 3, 3);
+g.addEdge(2, 4, 7);
+g.addEdge(1, 4, 2);
+g.addEdge(4, 3, 3);
+```
+```cpp
+結果
+List:
+0 : 1(w:1) 2(w:2)
+1 : 0(w:1) 3(w:3) 4(w:2)
+2 : 0(w:2) 4(w:7)
+3 : 1(w:3) 4(w:3)
+4 : 2(w:7) 1(w:2) 3(w:3)
+Matrix:
+  0 1 2 3 4
+0 0 1 2 0 0
+1 1 0 0 3 2
+2 2 0 0 0 7
+3 0 3 0 0 3
+4 0 2 7 3 0
+DFS: 0 1 3 4 2
+BFS: 0 1 2 3 4
+Kruskal:
+0 - 1 : 1
+0 - 2 : 2
+1 - 4 : 2
+1 - 3 : 3
+Total = 8
+Prim:
+0 - 1 : 1
+0 - 2 : 2
+1 - 3 : 3
+1 - 4 : 2
+Total = 8
+```
+### 結論
+在程式實作中，圖的基本表示方式，包含Adjacency List與Adjacency Matrix兩種表示法，還有點之間的距離。
+在圖的走訪部分，透過 DFS 與 BFS 能驗證節點的連通性還有順序；在最小生成樹部分，Kruskal 與 Prim 演算法都可以正確求最小距離的生成樹，並透過不同方式達到相同目標。
+
+## 申論及開發報告
+
+在本次實作圖的功能過程中，主要從最基本的圖表示的程式開始改，慢慢加入要寫的功能。
+一開始在作圖的結構時，使用單一陣列來儲存邊，但在DFS與BFS時發現不易管理兩點之間的關係，改用adjacency list，並加另一個vector儲存距離(就是權重)，使資料結構更清楚且方便操作，
+在 DFS 的實作過程中，主要在於如何避免重複拜訪同一個點，使用visited陣列來標記已走過的節點，並透過遞迴方式搜尋所有可到達的節點。一開始容易出現無限遞迴的問題，
+BFS 的部分則使用queue來實作階層式走訪，
+在最小生成樹的部分，Kruskal需要先將所有邊收集並排序，因此使用sort搭配額外的比較函式，Prim 演算法則是從一個起點開始逐步擴展，每次選擇距離最短的邊加入生成樹，在寫程式的過程中，透過不斷測試與修正錯誤
+，慢慢完成 DFS、BFS 與spanning tree等核心功能，也更理解不同演算法的方式。
 # 41343119
 Graph 
 ## 解題說明
@@ -286,245 +577,6 @@ int main() {
 1.	相鄰串列 (Adjacency Lists)」，能避免了矩陣的空間浪費，確保時間與空間複雜度皆達到最優的 $O(V+E)$。
 2.	連通分支 (Connected Components)利用基礎的 DFS (深度優先搜尋)，能正確且有效地找出圖中彼此獨立的子圖。
 3.	雙連通分量 (Biconnected Components)結合了 Tarjan 演算法（利用 dfn 與 low 判斷關節點）與堆疊 (Stack) 結構。能找出彼此獨立的子圖。
-
-
-# 41343128 陳廷鑫
-Graph 
-## 解題說明
-實作的部分:
-1. Adjacency List、Adjacency Matrix
-2. BFS、DFS
-3. Weighted
-4. Spanning Trees:Kruskal’s Algorithm、Prim’s Algorithm
-### 解題策略和步驟
-
-
-## 程式實作
-以下是程式碼：
-### Adjacency List
-```cpp
-vector<int> adj[100];     
-vector<int> weight[100];
-```
-
-### Adjacency List
-```cpp
-void showList() {
-    vector<int>::iterator it1;
-    vector<int>::iterator it2;
-
-    for (int i = 0; i < n; i++) {
-        cout << i << " : ";
-
-        it1 = adj[i].begin();
-        it2 = weight[i].begin();
-
-        while (it1 != adj[i].end()) {
-            cout << *it1 << "(w:" << *it2 << ") ";
-            ++it1;
-            ++it2;
-        }
-        cout << endl;
-    }
-}
-```
-### Adjacency Matrix
-```cpp
-void showMatrix() {
-    cout << "  ";
-    for (int i = 0; i < n; i++) {
-        cout << i << " ";
-    }
-    cout << endl;
-
-    for (int i = 0; i < n; i++) {
-        cout << i << " ";
-        for (int j = 0; j < n; j++) {
-            bool found = false;
-
-            vector<int>::iterator it1 = adj[i].begin();
-            vector<int>::iterator it2 = weight[i].begin();
-
-            while (it1 != adj[i].end()) {
-                if (*it1 == j) {
-                    cout << *it2 << " ";
-                    found = true;
-                    break;
-                }
-                ++it1;
-                ++it2;
-            }
-
-            if (!found) {
-                cout << "0 ";
-            }
-        }
-        cout << endl;
-    }
-}
-```
-
-### DFS
-```cpp
-void DFS_util(int v, bool visited[]) {
-        visited[v] = true;
-        cout << v << " ";
-
-        vector<int>::iterator it;
-        for (it = adj[v].begin(); it != adj[v].end(); ++it) {
-            int next = *it;
-            if (!visited[next]) {
-                DFS_util(next, visited);
-            }
-        }
-    }
-```
-
-### BFS
-```cpp
-void BFS(int start) {
-        bool visited[100] = { false };
-        queue<int> q;
-
-        visited[start] = true;
-        q.push(start);
-
-        while (!q.empty()) {
-            int v = q.front();
-            q.pop();
-            cout << v << " ";
-
-            vector<int>::iterator it;
-            for (it = adj[v].begin(); it != adj[v].end(); ++it) {
-                int next = *it;
-                if (!visited[next]) {
-                    visited[next] = true;
-                    q.push(next);
-                }
-            }
-        }
-        cout << endl;
-    }
-```
-
-### Kruskal
-```cpp
-void Kruskal() {
-    vector<Edge> edges;
-
-    for (int i = 0; i < n; i++) {
-        vector<int>::iterator it1 = adj[i].begin();
-        vector<int>::iterator it2 = weight[i].begin();
-
-        while (it1 != adj[i].end()) {
-            int v = *it1;
-            int w = *it2;
-
-            if (i < v) {
-                Edge e;
-                e.u = i;
-                e.v = v;
-                e.weight = w;
-                edges.push_back(e);
-            }
-
-            ++it1;
-            ++it2;
-        }
-    }
-
-    sort(edges.begin(), edges.end(), cmp);
-
-    int parent[100];
-    for (int i = 0; i < n; i++) parent[i] = i;
-
-    int total = 0;
-
-    vector<Edge>::iterator it;
-    for (it = edges.begin(); it != edges.end(); ++it) {
-        int u = it->u;
-        int v = it->v;
-        int w = it->weight;
-
-        if (findParent(u, parent) != findParent(v, parent)) {
-            cout << u << " - " << v << " : " << w << endl;
-            total += w;
-            unite(u, v, parent);
-        }
-    }
-
-    cout << "Total = " << total << endl;
-}
-```
-
-### Prim
-```cpp
-void Prim(int start) {
-    int key[100];
-    bool inMST[100];
-    int parent[100];
-
-    for (int i = 0; i < n; i++) {
-        key[i] = 999999;
-        inMST[i] = false;
-        parent[i] = -1;
-    }
-
-    key[start] = 0;
-
-    for (int count = 0; count < n - 1; count++) {
-        int min = 999999, u = -1;
-
-        for (int i = 0; i < n; i++) {
-            if (!inMST[i] && key[i] < min) {
-                min = key[i];
-                u = i;
-            }
-        }
-
-        inMST[u] = true;
-
-        vector<int>::iterator it1 = adj[u].begin();
-        vector<int>::iterator it2 = weight[u].begin();
-
-        while (it1 != adj[u].end()) {
-            int v = *it1;
-            int w = *it2;
-
-            if (!inMST[v] && w < key[v]) {
-                key[v] = w;
-                parent[v] = u;
-            }
-
-            ++it1;
-            ++it2;
-        }
-    }
-
-    int total = 0;
-    for (int i = 0; i < n; i++) {
-        if (parent[i] != -1) {
-            cout << parent[i] << " - " << i << " : " << key[i] << endl;
-            total += key[i];
-        }
-    }
-
-    cout << "Total = " << total << endl;
-}
-```
-## 效能分析
-
-* **空間複雜度**：
-## 測試與驗證
-
-### 測試案例
-
-
-### 結論
-
-
-
-## 申論及開發報告
 
 
 
