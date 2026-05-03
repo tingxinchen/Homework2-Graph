@@ -1,3 +1,4 @@
+//41343128
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -83,17 +84,17 @@ public:
         vector<bool> visited(n, false);
         queue<int> q;
 
-        //³B²z°_ÂI
+        //è™•ç†èµ·é»
         visited[start] = true;
         q.push(start);
 
         while (!q.empty()) {
-            //¥Ø«e­nªºÂI
+            //ç›®å‰è¦çš„é»
             int v = q.front();
             q.pop();
             cout << v << " ";
 
-            //ÀË¬d
+            //æª¢æŸ¥
             for (int w : adj[v]) {
                 if (!visited[w]) {
                     visited[w] = true; 
